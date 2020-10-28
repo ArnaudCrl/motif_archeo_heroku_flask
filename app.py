@@ -2,7 +2,7 @@
 
 from flask import Flask, jsonify, Response, request
 import asyncio, aiohttp
-# from io import BytesIO
+from io import BytesIO
 from fastai.vision.all import *
 
 path = Path(__file__).parent
@@ -36,7 +36,7 @@ def index():
 @app.route('/analyze', methods=['POST'])
 def analyze():
     print("appel fct analyse")
-    data = request.file()
+    data = request.form()
     img_bytes = data['file'].read()
     img = open_image(BytesIO(img_bytes))
     prediction, _, values = learn.predict(img)
