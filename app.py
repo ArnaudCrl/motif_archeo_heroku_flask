@@ -1,7 +1,7 @@
 """Flask App Project."""
 
 from flask import Flask, jsonify, Response, request
-# import uvicorn, aiohttp, asyncio
+import asyncio
 # from io import BytesIO
 from fastai.vision.all import *
 
@@ -22,7 +22,7 @@ async def setup_learner():
     print("learner loaded !")
     return learn
 
-learn = setup_learner()
+learn = asyncio.run(setup_learner())
 
 app = Flask(__name__)
 
@@ -32,10 +32,10 @@ def index():
     return Response(html.open().read())
 
 @app.route('/analyze', methods=['POST'])
-async def analyze():
+def analyze():
     print("appel fct analyse")
-    data = await request.file["img"]
-    img_bytes = await (data['file'].read())
+    data = request.file()
+    img_bytes = data['file'].read()
     img = open_image(BytesIO(img_bytes))
     prediction, _, values = learn.predict(img)
     label = str(prediction)
