@@ -24,7 +24,7 @@ async def setup_learner():
 
 
 @app.route('/')
-def index(request):
+def index():
     html = path / 'view' / 'index.html'
     return Response(html.open().read())
 
