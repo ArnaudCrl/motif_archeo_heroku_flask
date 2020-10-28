@@ -36,7 +36,7 @@ def index():
 @app.route('/analyze', methods=['POST'])
 def analyze():
     print("appel fct analyse")
-    data = request.file()
+    data = request.files
     img_bytes = data.read()
     img = open_image(BytesIO(img_bytes))
     prediction, _, values = learn.predict(img)
