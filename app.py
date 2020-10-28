@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def index(request):
+def index():
     html = path/'view'/'index.html'
     return HTMLResponse(html.open().read())
 
