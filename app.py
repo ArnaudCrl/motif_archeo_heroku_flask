@@ -6,7 +6,7 @@ from flask import Flask, jsonify, Response
 from fastai.vision.all import *
 
 app = Flask(__name__)
-path = Path(__file__)
+path = Path(__file__).parent
 
 @app.route('/')
 def index():
