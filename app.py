@@ -39,8 +39,8 @@ def analyze():
     data = request.files['file']
     print(data)
     img_bytes = data.read()
-    img = Image.open(BytesIO(img_bytes))
-    prediction, _, values = learn.predict(img)
+    #img = Image.open(BytesIO(img_bytes))
+    prediction, _, values = learn.predict(img_bytes)
     label = str(prediction)
     accuracy = values[int(prediction)].item()
     return Response({'result': label + ' ({:05.2f}%)'.format(accuracy * 100)})
