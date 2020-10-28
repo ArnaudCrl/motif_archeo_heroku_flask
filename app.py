@@ -3,7 +3,7 @@
 from flask import Flask, jsonify
 # import uvicorn, aiohttp, asyncio
 # from io import BytesIO
-import os
+from fastai.vision.all import *
 
 app = Flask(__name__)
 path = Path(__file__).parent
