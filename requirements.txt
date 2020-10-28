@@ -4,5 +4,5 @@ fastai==2.0.16
 gunicorn
 flask
 asyncio
-
+aiohttp
 
