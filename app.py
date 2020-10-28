@@ -5,10 +5,9 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def index():
-    """Return homepage."""
-    json_data = {'Hello': 'World!'}
-    return jsonify(json_data)
+def index(request):
+    html = path/'view'/'index.html'
+    return HTMLResponse(html.open().read())
 
 
 if __name__ == '__main__':
