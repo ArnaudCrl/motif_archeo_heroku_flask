@@ -19,6 +19,7 @@ async def download_file(url, dest):
 async def setup_learner():
     await download_file(model_file_url, model_path/model_file_name)
     learn = load_learner(model_path / model_file_name)
+    print("learner loaded !")
     return learn
 
 learn = setup_learner()
@@ -33,7 +34,7 @@ def index():
 @app.route('/analyze', methods=['POST'])
 async def analyze():
     print("appel fct analyse")
-    data = await request.file()
+    data = await request.file["img"]
     img_bytes = await (data['file'].read())
     img = open_image(BytesIO(img_bytes))
     prediction, _, values = learn.predict(img)
