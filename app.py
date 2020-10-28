@@ -35,14 +35,11 @@ def index():
 
 @app.route('/analyze', methods=['POST'])
 def analyze():
-    print("appel fct analyse")
-    data = request.files['file']
-    print(data)
-    img_bytes = data.read()
-    #img = Image.open(BytesIO(img_bytes))
+    img_bytes = request.files['file'].read()
     prediction, _, values = learn.predict(img_bytes)
+    print("prediction : " + str(prediction))
     label = str(prediction)
-    accuracy = values[int(prediction)].item()
+    accuracy = values[int(float(prediction))].item()
     return Response({'result': label + ' ({:05.2f}%)'.format(accuracy * 100)})
 
 if __name__ == '__main__':
