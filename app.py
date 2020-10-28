@@ -10,7 +10,7 @@ path = Path(__file__).parent
 
 @app.route('/')
 def index():
-    html = path/'view'/'index.html'
+    html = 'view/index.html'
     return Response(html.open().read())
 
 
