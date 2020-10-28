@@ -2,7 +2,7 @@
 
 from flask import Flask, jsonify
 app = Flask(__name__)
-
+path = Path(__file__).parent
 
 @app.route('/')
 def index():
