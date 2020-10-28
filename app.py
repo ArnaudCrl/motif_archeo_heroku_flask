@@ -5,12 +5,11 @@ import asyncio
 # from io import BytesIO
 from fastai.vision.all import *
 
+path = Path(__file__).parent
 
 model_file_url = 'https://www.dropbox.com/s/js3a84uh0dv7qit/model.pkl?dl=1'
 model_file_name = 'model.pkl'
 model_path = path
-
-path = Path(__file__).parent
 
 async def download_file(url, dest):
     if dest.exists(): return
