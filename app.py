@@ -1,7 +1,7 @@
 """Flask App Project."""
 
 from flask import Flask, jsonify, Response, request
-import asyncio
+import asyncio, aiohttp
 # from io import BytesIO
 from fastai.vision.all import *
 
