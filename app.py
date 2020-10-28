@@ -9,14 +9,14 @@ from fastai.vision.all import *
 
 path = Path(__file__).parent
 
-def download_file(url, dest):
+async def download_file(url, dest):
     if dest.exists(): return
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
             data = await response.read()
             with open(dest, 'wb') as f: f.write(data)
 
-def setup_learner():
+async def setup_learner():
     await download_file(model_file_url, model_path/model_file_name)
     learn = load_learner(model_path / model_file_name)
     return learn
