@@ -29,7 +29,8 @@ def index():
     return Response(html.open().read())
 
 @app.route('/analyze', methods=['POST'])
-async def analyze(request):
+async def analyze():
+    print("appel fct analyse")
     data = await request.form()
     img_bytes = await (data['file'].read())
     img = open_image(BytesIO(img_bytes))
