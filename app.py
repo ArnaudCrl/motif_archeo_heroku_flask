@@ -37,6 +37,7 @@ def index():
 def analyze():
     print("appel fct analyse")
     data = request.files
+    print(data)
     img_bytes = data.read()
     img = open_image(BytesIO(img_bytes))
     prediction, _, values = learn.predict(img)
