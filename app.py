@@ -39,7 +39,7 @@ def analyze():
     data = request.files['file']
     print(data)
     img_bytes = data.read()
-    img = open_image(BytesIO(img_bytes))
+    img = Image.open(BytesIO(img_bytes))
     prediction, _, values = learn.predict(img)
     label = str(prediction)
     accuracy = values[int(prediction)].item()
