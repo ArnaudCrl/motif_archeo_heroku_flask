@@ -1,13 +1,7 @@
-[[source]]
-url = "https://pypi.org/simple"
-verify_ssl = true
-name = "pypi"
+https://download.pytorch.org/whl/cpu/torch-1.6.0%2Bcpu-cp38-cp38-linux_x86_64.whl
+https://download.pytorch.org/whl/cpu/torchvision-0.7.0%2Bcpu-cp38-cp38-linux_x86_64.whl
+fastai==2.0.16
+gunicorn
+flask
 
-[packages]
-gunicorn = "*"
-flask = "*"
 
-[dev-packages]
-
-[requires]
-python_version = "3.9.0"
