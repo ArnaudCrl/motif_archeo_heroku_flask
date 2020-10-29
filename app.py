@@ -37,12 +37,10 @@ def index():
 def analyze():
     img_bytes = request.files['file'].read()
     prediction, _, probability = learn.predict(img_bytes)
-    print(prediction)
-    print(probability)
     #label = str(prediction)
     #accuracy = probability[int(float(prediction))].item()
     #return Response({'result': label + ' ({:05.2f}%)'.format(accuracy * 100)})
-    return Response({'result': "oui"})
+    return Response({'result': str(prediction)})
 
 if __name__ == '__main__':
     app.run()
