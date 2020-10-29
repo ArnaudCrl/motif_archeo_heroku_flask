@@ -39,10 +39,15 @@ def predict_from_bytes(img_bytes):
     pred,pred_idx,probs = learn.predict(img_bytes)
     classes = learn.dls.vocab
     predictions = sorted(zip(classes, map(float, probs)), key=lambda p: p[1], reverse=True)
+    
+    formated_result = (str(predictions[0][0]) + " : " + str('%.2f'%(predictions[0][1]*100)) + "%" + "\n"
+        + str(predictions[1][0]) + " : " + str('%.2f'%(predictions[1][1]*100)) + "%" + "\n"
+        + str(predictions[2][0]) + " : " + str('%.2f'%(predictions[2][1]*100)) + "%")
+    
     result_html1 = path/'static'/'result1.html'
     result_html2 = path/'static'/'result2.html'
     
-    result_html = str(result_html1.open().read() +str(predictions[0:3]) + result_html2.open().read())
+    result_html = str(result_html1.open().read() + formated_result + result_html2.open().read())
     return Response(result_html)
 
 
