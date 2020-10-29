@@ -7,7 +7,7 @@ from fastai.vision.all import *
 
 path = Path(__file__).parent
 
-model_file_url = 'https://www.dropbox.com/s/js3a84uh0dv7qit/model.pkl?dl=1'
+model_file_url = 'https://www.dropbox.com/s/gldzy9d6dv476s9/model.pkl?dl=1'
 model_file_name = 'model.pkl'
 model_path = path
 
