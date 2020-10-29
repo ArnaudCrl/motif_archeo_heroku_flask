@@ -28,19 +28,28 @@ learn = asyncio.run(setup_learner())
 
 app = Flask(__name__)
 
+
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    img_bytes = request.files['file'].read()
+    return predict_from_bytes(img_bytes)
+    
+def predict_from_bytes(img_bytes):
+    pred,pred_idx,probs = learn.predict(img_bytes)
+    classes = learn.dls.vocab
+    predictions = sorted(zip(classes, map(float, probs)), key=lambda p: p[1], reverse=True)
+    result_html1 = path/'static'/'result1.html'
+    result_html2 = path/'static'/'result2.html'
+    
+    result_html = str(result_html1.open().read() +str(predictions[0:3]) + result_html2.open().read())
+    return Response(result_html)
+
+
 @app.route('/')
 def index():
-    html = path / 'view' / 'index.html'
-    return Response(html.open().read())
-
-@app.route('/analyze', methods=['POST'])
-def analyze():
-    img_bytes = request.files['file'].read()
-    prediction, _, probability = learn.predict(img_bytes)
-    #label = str(prediction)
-    #accuracy = probability[int(float(prediction))].item()
-    #return Response({'result': label + ' ({:05.2f}%)'.format(accuracy * 100)})
-    return Response({'result': str(prediction)})
+    index_html = path/'static'/'index.html'
+    return Response(index_html.open().read())
 
 if __name__ == '__main__':
     app.run()
