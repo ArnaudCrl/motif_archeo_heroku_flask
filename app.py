@@ -44,10 +44,19 @@ def predict_from_bytes(img_bytes):
         + str(predictions[1][0])[4:] + " : " + str('%.2f'%(predictions[1][1]*100)) + "% " + "\n"
         + str(predictions[2][0])[4:] + " : " + str('%.2f'%(predictions[2][1]*100)) + "% ")
     
+    
+    
+    html_result =  "<p><span style="color: rgb(97, 189, 109); font-size: 24px;">{}&nbsp;</span><span style="font-size: 24px;">{}</span></p>
+                    <p><span style="color: rgb(251, 160, 38); font-size: 20px;">{}&nbsp;</span><span style="font-size: 20px;">{}</span></p>
+                    <p><span style="color: rgb(184, 49, 47); font-size: 18px;">{}&nbsp;</span><span style="font-size: 18px;">{}</span></p>"
+                    .format(str(predictions[0][0])[4:], str('%.2f'%(predictions[0][1]*100)) + "%",
+                            str(predictions[1][0])[4:], str('%.2f'%(predictions[1][1]*100)) + "%",
+                            str(predictions[2][0])[4:], str('%.2f'%(predictions[2][1]*100)) + "%")
+    
     result_html1 = path/'static'/'result1.html'
     result_html2 = path/'static'/'result2.html'
     
-    result_html = str(result_html1.open().read() + formated_result + result_html2.open().read())
+    result_html = str(result_html1.open().read() + html_result + result_html2.open().read())
     return Response(result_html)
 
 
