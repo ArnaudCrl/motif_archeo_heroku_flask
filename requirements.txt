@@ -5,4 +5,4 @@ gunicorn
 flask
 asyncio
 aiohttp
-PIL==1.1.7
+pillow
