@@ -51,7 +51,7 @@ def make_square(im, desired_size=512):
     return new_im
     
 def predict_from_bytes(img_bytes):
-    im = Image.open(img_bytes)
+    im = Image.open(BytesIO(img_bytes))
     im = make_square(im)
     im.save("tmp" + '.jpg', 'JPEG', quality=100)
     pred,pred_idx,probs = learn.predict("tmp.jpg")
