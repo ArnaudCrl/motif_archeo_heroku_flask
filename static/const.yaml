@@ -1,0 +1,9 @@
+DAY_MON: MON
+
+DAYS:
+  - MON
+  - TUE
+
+MAP_CONTENT_TYPE_TO_EXTENSION:
+  image/gif: .gif
+  image/jpg: .jpg
