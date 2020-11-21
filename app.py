@@ -88,8 +88,7 @@ def make_square(im, desired_size=512):
 
 @app.route('/')
 def index():
-    index_html = path/'static'/'index.html'
-    return Response(index_html.open().read())
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run()
