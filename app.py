@@ -1,10 +1,11 @@
 """Flask App Project."""
 
-from flask import Flask, jsonify, Response, request
+from flask import Flask, jsonify, Response, request, render_template
 import asyncio, aiohttp
 from io import BytesIO
 from fastai.vision.all import *
 from PIL import Image
+import os
 
 path = Path(__file__).parent
 
@@ -31,10 +32,51 @@ app = Flask(__name__)
 
 
 
-@app.route('/upload', methods=['POST'])
+
+    
+    @app.route('/upload', methods=['POST'])
 def upload():
+
     img_bytes = request.files['file'].read()
-    return predict_from_bytes(img_bytes)
+    im = Image.open(BytesIO(img_bytes))
+    im = make_square(im)
+    im.save("tmp" + '.jpg', 'JPEG', quality=100)
+    pred,pred_idx,probs = learn.predict("tmp.jpg")
+    classes = learn.dls.vocab
+    predictions = sorted(zip(classes, map(float, probs)), key=lambda p: p[1], reverse=True)
+
+    html_result =  """<p><span style="color: rgb(97, 189, 109);">{}&nbsp;</span>{}</p>
+                      <p><span style="color: rgb(251, 160, 38);">{}&nbsp;</span>{}</p>
+                      <p><span style="color: rgb(184, 49, 47);">{}&nbsp;</span>{}</p>""".format(
+                            str(predictions[0][0])[4:] + " :", str('%.2f'%(predictions[0][1]*100)) + "%",
+                            str(predictions[1][0])[4:] + " :", str('%.2f'%(predictions[1][1]*100)) + "%",
+                            str(predictions[2][0])[4:] + " :", str('%.2f'%(predictions[2][1]*100)) + "%")
+    
+
+    prediction = [str(predictions[0][0])[4:],
+                  str(predictions[1][0])[4:],
+                  str(predictions[2][0])[4:]]
+                  
+    probas = [str('%.2f'%(predictions[0][1]*100)) + "%",
+              str('%.2f'%(predictions[1][1]*100)) + "%",
+              str('%.2f'%(predictions[2][1]*100)) + "%"]
+
+    path = "static/images/Vignettes/"
+
+    result1 = ""
+    result2 = ""
+    result3 = ""
+
+    for f in os.listdir(path + prediction[0]):
+        result1 += """<img src="static/images/Vignettes/{}/{}" class="responsive"/>""".format(prediction[0], f)
+
+    for f in os.listdir(path + prediction[1]):
+        result2 += """<img src="static/images/Vignettes/{}/{}" class="responsive"/>""".format(prediction[1], f)
+
+    for f in os.listdir(path + prediction[2]):
+        result3 += """<img src="static/images/Vignettes/{}/{}" class="responsive"/>""".format(prediction[2], f)
+
+    return render_template('result.html', prediction = prediction, probas = probas, result1 = result1, result2 = result2, result3 = result3)
     
 def make_square(im, desired_size=512):
     old_size = im.size  # old_size[0] is in (width, height) format
@@ -49,31 +91,7 @@ def make_square(im, desired_size=512):
                       (desired_size - new_size[1]) // 2))
 
     return new_im
-    
-def predict_from_bytes(img_bytes):
-    im = Image.open(BytesIO(img_bytes))
-    im = make_square(im)
-    im.save("tmp" + '.jpg', 'JPEG', quality=100)
-    pred,pred_idx,probs = learn.predict("tmp.jpg")
-    classes = learn.dls.vocab
-    predictions = sorted(zip(classes, map(float, probs)), key=lambda p: p[1], reverse=True)
-    
-    html_result =  """<p><span style="color: rgb(97, 189, 109);">{}&nbsp;</span>{}</p>
-                      <p><span style="color: rgb(251, 160, 38);">{}&nbsp;</span>{}</p>
-                      <p><span style="color: rgb(184, 49, 47);">{}&nbsp;</span>{}</p>""".format(
-                            str(predictions[0][0])[4:] + " :", str('%.2f'%(predictions[0][1]*100)) + "%",
-                            str(predictions[1][0])[4:] + " :", str('%.2f'%(predictions[1][1]*100)) + "%",
-                            str(predictions[2][0])[4:] + " :", str('%.2f'%(predictions[2][1]*100)) + "%")
-    
-    result_html1 = path/'static'/'result1.html'
-    result_html2 = path/'static'/'result2.html'
-    
-    result_html = str(result_html1.open().read() + html_result + result_html2.open().read())
-    return Response(result_html)
-
-
-
-
+ 
 
 @app.route('/')
 def index():

@@ -172,7 +172,7 @@ iframe {
 }
 
 .wrap-contact100 {
-  width: 500px;
+  width: 1000px;
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
@@ -588,7 +588,12 @@ textarea.input100 {
   line-height: 1.2;
 }
 
-
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
 
 
 

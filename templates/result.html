@@ -1,0 +1,108 @@
+<html>
+<head>
+    <title>What Kind of ?</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="static/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/vendor/animate/animate.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" hrexf="static/vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/css/util.css">
+    <link rel="stylesheet" type="text/css" href="static/css/main.css">
+<!--===============================================================================================-->
+</head>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.uppercase {
+  text-transform: uppercase;
+  }
+
+.zoom:hover {
+  transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.img-container {
+<!--  float: left;-->
+  width: auto;
+  height: 100px;
+  padding: 5px;
+  transition: transform .2s; /* Animation */
+
+}
+
+.responsive {
+  width: 100%;
+  height: auto;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+</style>
+
+<body>
+
+    <div class="container-contact100">
+        <div class="wrap-contact100">
+            <a href="/"><img height="42" width="42" src="static/images/25694.png"></a>
+			<span class="contact100-form-title">Résultats</span>
+            <img src="" id="saved_image" class="center"/>
+            <ol class="wrap-input100 validate-input">
+
+                <p class = "uppercase" style="color: rgb(97, 189, 109); font-size: 30px;"><b> {{ prediction[0] }} : {{ probas[0] }} </b>
+                {{ result1|safe }}
+                </p>
+                <hr style="height:4px;border-width:0;color:gray;background-color:gray">
+
+                <p class = "uppercase" style="color: rgb(251, 160, 38); font-size: 30px;"><b> {{ prediction[1] }} : {{ probas[1] }} </b>
+                {{ result2|safe }}
+                </p>
+                <hr style="height:4px;border-width:0;color:gray;background-color:gray">
+
+
+                <p class = "uppercase" style="color: rgb(184, 49, 47); font-size: 30px;"><b> {{ prediction[2] }} : {{ probas[2] }} </b>
+                {{ result3|safe }}
+                </p>
+
+                <script>
+                    var prediction = {{ prediction|safe }};
+                    var result = 0;
+                    for(var result = 1; result < 3; result++) {
+                        var i;
+                        for (i = 0; i < 5; i++) {
+                            var img = document.createElement("img");
+                            img.src = "../static/images/" + prediction[result] + i  + ".jpg";
+                            img.width = "170"
+                            img.height = "170"
+                            var src = document.getElementById("res" + result + "img" + i);
+                            src.appendChild(img);
+                        }
+                    }
+                </script>
+            </ol>
+            </div>
+        </div>
+    </div>
+    <script src="static/js/show_result.js"></script>
+    </body>
+</html>
