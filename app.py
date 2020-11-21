@@ -34,7 +34,7 @@ app = Flask(__name__)
 
 
     
-    @app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['POST'])
 def upload():
 
     img_bytes = request.files['file'].read()
@@ -44,14 +44,7 @@ def upload():
     pred,pred_idx,probs = learn.predict("tmp.jpg")
     classes = learn.dls.vocab
     predictions = sorted(zip(classes, map(float, probs)), key=lambda p: p[1], reverse=True)
-
-    html_result =  """<p><span style="color: rgb(97, 189, 109);">{}&nbsp;</span>{}</p>
-                      <p><span style="color: rgb(251, 160, 38);">{}&nbsp;</span>{}</p>
-                      <p><span style="color: rgb(184, 49, 47);">{}&nbsp;</span>{}</p>""".format(
-                            str(predictions[0][0])[4:] + " :", str('%.2f'%(predictions[0][1]*100)) + "%",
-                            str(predictions[1][0])[4:] + " :", str('%.2f'%(predictions[1][1]*100)) + "%",
-                            str(predictions[2][0])[4:] + " :", str('%.2f'%(predictions[2][1]*100)) + "%")
-    
+  
 
     prediction = [str(predictions[0][0])[4:],
                   str(predictions[1][0])[4:],
