@@ -60,13 +60,13 @@ def upload():
     result2 = ""
     result3 = ""
 
-    for f in os.listdir(path + prediction[0].decode('latin1')):
+    for f in os.listdir(path + prediction[0]):
         result1 += """<img src="static/images/Vignettes/{}/{}" class="responsive"/>""".format(prediction[0], f)
 
-    for f in os.listdir(path + prediction[1].decode('latin1')):
+    for f in os.listdir(path + prediction[1]):
         result2 += """<img src="static/images/Vignettes/{}/{}" class="responsive"/>""".format(prediction[1], f)
 
-    for f in os.listdir(path + prediction[2].decode('latin1')):
+    for f in os.listdir(path + prediction[2]):
         result3 += """<img src="static/images/Vignettes/{}/{}" class="responsive"/>""".format(prediction[2], f)
 
     return render_template('result.html', prediction = prediction, probas = probas, result1 = result1, result2 = result2, result3 = result3)
