@@ -9,8 +9,8 @@ import os
 
 path = Path(__file__).parent
 
-model_file_url = 'https://www.dropbox.com/s/gldzy9d6dv476s9/model.pkl?dl=1'
-model_file_name = 'model.pkl'
+model_file_url = 'https://www.dropbox.com/s/swydgx4eaxj3h4h/archeo_bw.pkl?dl=1'
+model_file_name = 'archeo_bw.pkl'
 model_path = path
 
 async def download_file(url, dest):
