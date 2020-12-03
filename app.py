@@ -41,7 +41,8 @@ def upload():
     im = Image.open(BytesIO(img_bytes))
     im = make_square(im)
     im.save("tmp" + '.jpg', 'JPEG', quality=100)
-    pred,pred_idx,probs = learn.predict("tmp.jpg")
+#     pred,pred_idx,probs = learn.predict("tmp.jpg")
+    pred,pred_idx,probs = learn.predict(img_bytes)
     classes = learn.dls.vocab
     predictions = sorted(zip(classes, map(float, probs)), key=lambda p: p[1], reverse=True)
   
