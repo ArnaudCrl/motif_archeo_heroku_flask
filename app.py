@@ -3,6 +3,8 @@
 from flask import Flask, jsonify, Response, request, render_template
 import asyncio, aiohttp
 from io import BytesIO
+import base64
+from flask_jsglue import JSGlue
 from fastai.vision.all import *
 from PIL import Image
 import os
