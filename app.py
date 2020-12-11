@@ -31,7 +31,7 @@ async def setup_learner():
 learn = asyncio.run(setup_learner())
 print("before app def")
 app = Flask(__name__)
-
+jsglue = JSGlue(app)
 
 
 @app.route('/upload', methods=["POST", "GET"])
