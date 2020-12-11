@@ -1,6 +1,6 @@
 var el = x => document.getElementById(x);
 
-var upload_img = document.getElementById('inp_file').addEventListener('change', fileChange, false);
+var upload_img = document.getElementById('fileInput').addEventListener('change', fileChange, false);
 
 function fileChange(e) {
 
@@ -8,45 +8,28 @@ function fileChange(e) {
 
     if (file.type == "image/jpeg" || file.type == "image/png") {
 
-        // Activate Submit Button
-        el('submit_btn').type = "submit";
-        document.getElementById('inp_img').value = '';
-        var reader = new FileReader();  
+        var reader = new FileReader();
         reader.onload = function(readerEvent) {
 
             var image = new Image();
             image.onload = function(imageEvent) {	
-                var max_size = 420;
+                var max_size = 512;
                 var w = image.width;
                 var h = image.height;
-                // console.log("width:",w, "height:", h);
+                 console.log("width:",w, "height:", h);
                 if (w > h) {
-                    if (w > max_size) { h*=max_size/w; w=max_size; }
-                } else     {  if (h > max_size) { w*=max_size/h; h=max_size; } }
-                // console.log("Updated width:",w, "Updated height:", h);
+                    if (w > max_size) {
+                        h*=max_size/w; w=max_size;
+                    }
+                } else {
+                    if (h > max_size) {
+                        w*=max_size/h; h=max_size;
+                    }
+                }
+                 console.log("Updated width:",w, "Updated height:", h);
 
                 var canvas = document.createElement('canvas');
-                // // FORCEFUL to portrait mode only images
-                // if (w > h) {
-                //     // canvas.width = h;
-                //     // canvas.height = w;
-                //     canvas.width = w;
-                //     canvas.height = h;
-                //     var ctx = canvas.getContext('2d');
-                //     // move the rotation point to the center of the rect
-                //     // ctx.translate( h / 2, w / 2);
-                //     ctx.translate( w / 2, h / 2);
-                //     // Rotate Image
-                //     ctx.rotate(-90 * Math.PI / 180);
-                //     // ctx.drawImage(image, -h / 2, -w / 2, h, w);
-                //     ctx.drawImage(image, -w / 2, -h / 2, w, h);
-                // }
-                // else {
-                //     canvas.width = w;
-                //     canvas.height = h;
-                //     canvas.getContext('2d').drawImage(image, 0, 0, w, h);
-                // }
-                
+
                 //  NO FORCEFUL Just Use Default Image
                 canvas.width = w;
                 canvas.height = h;
@@ -65,22 +48,24 @@ function fileChange(e) {
                         dataURL = canvas.toDataURL("image/png", 0.50);
                     }
                 }
-                el('image-picked').src = dataURL;
-                el('image-picked').className = '';
-                // before sending to server, split dataURL to send only data bytes
+//                el('fileDisplayArea').src = dataURL;
+//                el('fileDisplayArea').className = '';
                 data_bytes = dataURL.split(',');
-                document.getElementById('inp_img').value = data_bytes[1];
-                // save local data_bytes[1]
-                localStorage.setItem("imgData", data_bytes[1]);
-                var dataImage = localStorage.getItem('imgData');
-                // console.log("data_bytes[1]:", data_bytes[1]);
-                
+                localStorage.setItem("data64", data_bytes[1]);
+                location.href = Flask.url_for("analyse", {img: data_bytes[1]});
+
+
             }
             image.src = readerEvent.target.result;
+            el('fileDisplayArea').src = image.src;
+//            fileDisplayArea.appendChild(image);
         }
+
+
+
         reader.readAsDataURL(file);
     } else {
-        document.getElementById('inp_file').value = '';	
+        document.getElementById('fileInput').value = '';
         alert('Please select image only in JPG or PNG format!');	
     }
 }
@@ -123,3 +108,5 @@ function dataURLtoBlob(dataURL) {
         return new Blob([new Uint8Array(array)], {type: 'image/png'});
     }
   }
+
+

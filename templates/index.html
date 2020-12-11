@@ -1,60 +1,50 @@
+<html>
 <head>
 	<title>Décors géométriques vestimentaires</title>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!--===============================================================================================-->
-<!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="static/images/icons/favicon.ico"/>
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="static/vendor/bootstrap/css/bootstrap.min.css">
-<!--===============================================================================================-->
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="static/vendor/animate/animate.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="static/vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="static/vendor/animsition/css/animsition.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" hrexf="static/vendor/select2/select2.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="static/vendor/daterangepicker/daterangepicker.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="static/css/util.css">
-	<link rel="stylesheet" type="text/css" href="static/css/main.css">
-<!--===============================================================================================-->
 </head>
-<body>
-	<div class="container-contact100">
-		<div class="wrap-contact100">
-			<a href="/"><img height="42" width="42" src="static/images/25694.png" ></a>
-			<span class="contact100-form-title">Décors géométriques vestimentaires</span>
-			<form class="contact100-form validate-form" action="/upload" method="post" enctype="multipart/form-data">
-				<div class="wrap-input100 validate-input" data-validate = "Valid image file is required: jpg or png">
-					<span class="label-input100">Selectionnez une image</span>
-					<input id="inp_file" type="file" name="file" >
-					<input id="inp_img" type="hidden" name="img" value="">
-					<span class="focus-input100"></span>
-				</div>
-				<div>
-					<img id='image-picked' class='no-display'>
-				</div>
-				<div class="container-contact100-form-btn">
-					<div class="wrap-contact100-form-btn">
-						<div class="contact100-form-bgbtn"></div>
-						<!--button class should be copyright @pankajmathur.com contact100-form-btn -->
-						<button type = "button" id = "submit_btn" class="contact100-form-btn">
-							<span>
-								Analyser l'image
-								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
-							</span>
-						</button>
-					</div>
-				</div>
 
-			</form>
-		</div>
-	</div>
-<script src="static/js/utility.js"></script>
+    {{ JSGlue.include() }}
+    <link rel="stylesheet" href="static/css/main.css">
+
+<body style="background-color:#DDD;">
+
+
+    <table cellpadding="10" style="width: 100%; height: 200px; border:solid black 0px;">
+        <tbody>
+            <tr>
+                <td width="25%" style="text-align: center; ">
+                    <div>
+                        Veuillez sélectionner une image :
+                        <input type="file" id="fileInput">
+                    </div>
+                </td>
+                <td>
+                    <p><img style="display: block; margin-left: auto; margin-right: auto;" id="fileDisplayArea" src="" width="auto" height="250" /></p>
+                </td>
+                <td width="25%" style="text-align: center;">
+                    Le résultat de la prédiction par l'IA s'affiche en dessous avec le degré de confiance accordé par l'IA pour chaque classes.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+
+<!--    <div>-->
+<!--        Select an image file:-->
+<!--        <input type="file" id="fileInput">-->
+<!--    </div>-->
+
+
+    {% block content %}
+    {% endblock content%}
+
 </body>
+
+<script src="static/js/utility.js"></script>
+
+
 </html>
+
