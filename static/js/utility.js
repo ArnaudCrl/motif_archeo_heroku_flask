@@ -50,10 +50,16 @@ function fileChange(e) {
                         dataURL = canvas.toDataURL("image/png", 0.50);
                     }
                 }
+
+
+
                 el('fileDisplayArea').src = dataURL;
                 el('fileDisplayArea').className = '';
                 // before sending to server, split dataURL to send only data bytes
                 data_bytes = dataURL.split(',');
+                document.getElementById('uploaded_file').value = data_bytes[1];
+                console.log("put data to uploaded file");
+
                 // save local data_bytes[1]
                 localStorage.setItem("data64", data_bytes[1]);
                 var dataImage = localStorage.getItem('imgData');
