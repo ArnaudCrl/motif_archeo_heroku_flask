@@ -58,31 +58,32 @@ def upload_file():
         classes = learn.dls.vocab
         predictions = sorted(zip(classes, map(float, probs)), key=lambda p: p[1], reverse=True)
 
-        path = "static/images/Vignettes/"
-        # print(os.listdir(path))
+#         path = "static/images/Vignettes/"
+#         # print(os.listdir(path))
         prediction = [str(predictions[0][0])[4:],
                       str(predictions[1][0])[4:],
                       str(predictions[2][0])[4:]]
+        print(predition)
 
-        probas = [str('%.2f' % (predictions[0][1] * 100)) + "%",
-                  str('%.2f' % (predictions[1][1] * 100)) + "%",
-                  str('%.2f' % (predictions[2][1] * 100)) + "%"]
+#         probas = [str('%.2f' % (predictions[0][1] * 100)) + "%",
+#                   str('%.2f' % (predictions[1][1] * 100)) + "%",
+#                   str('%.2f' % (predictions[2][1] * 100)) + "%"]
 
-        result1 = []
-        result2 = []
-        result3 = []
+#         result1 = []
+#         result2 = []
+#         result3 = []
 
-        for f in os.listdir(path + prediction[0]):
-            result1.append("""static/images/Vignettes/{}/{}""".format(prediction[0], f))
+#         for f in os.listdir(path + prediction[0]):
+#             result1.append("""static/images/Vignettes/{}/{}""".format(prediction[0], f))
 
-        for f in os.listdir(path + prediction[1]):
-            result2.append("""static/images/Vignettes/{}/{}""".format(prediction[1], f))
+#         for f in os.listdir(path + prediction[1]):
+#             result2.append("""static/images/Vignettes/{}/{}""".format(prediction[1], f))
 
-        for f in os.listdir(path + prediction[2]):
-            result3.append("""static/images/Vignettes/{}/{}""".format(prediction[2], f))
+#         for f in os.listdir(path + prediction[2]):
+#             result3.append("""static/images/Vignettes/{}/{}""".format(prediction[2], f))
 
-        return render_template('result.html', prediction=prediction, probas=probas, result1=result1, result2=result2,
-                               result3=result3)
+#         return render_template('result.html', prediction=prediction, probas=probas, result1=result1, result2=result2,
+#                                result3=result3)
 
     return render_template('index.html')
 
