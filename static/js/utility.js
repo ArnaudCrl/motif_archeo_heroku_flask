@@ -1,18 +1,20 @@
 var el = x => document.getElementById(x);
-
+document.getElementById('button').style.visibility = 'hidden';
 var upload_img = document.getElementById('fileInput').addEventListener('change', fileChange, false);
 
 function fileChange(e) {
 
+    document.getElementById('button').style.visibility = 'visible';
+
     var file = e.target.files[0];
 
-    if (file.type == "image/jpeg" || file.type == "image/png") {
+    if (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/jpg") {
 
         var reader = new FileReader();
         reader.onload = function(readerEvent) {
 
             var image = new Image();
-            image.onload = function(imageEvent) {	
+            image.onload = function(imageEvent) {
                 var max_size = 512;
                 var w = image.width;
                 var h = image.height;
@@ -48,22 +50,21 @@ function fileChange(e) {
                         dataURL = canvas.toDataURL("image/png", 0.50);
                     }
                 }
-//                el('fileDisplayArea').src = dataURL;
-//                el('fileDisplayArea').className = '';
+                el('fileDisplayArea').src = dataURL;
+                el('fileDisplayArea').className = '';
+                // before sending to server, split dataURL to send only data bytes
                 data_bytes = dataURL.split(',');
+                // save local data_bytes[1]
                 localStorage.setItem("data64", data_bytes[1]);
-                location.href = Flask.url_for("analyse", {img: data_bytes[1]});
-
-
+                var dataImage = localStorage.getItem('imgData');
+                // console.log("data_bytes[1]:", data_bytes[1]);
             }
+
             image.src = readerEvent.target.result;
-            el('fileDisplayArea').src = image.src;
-//            fileDisplayArea.appendChild(image);
         }
 
-
-
         reader.readAsDataURL(file);
+
     } else {
         document.getElementById('fileInput').value = '';
         alert('Please select image only in JPG or PNG format!');	

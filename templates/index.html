@@ -4,7 +4,6 @@
 	<meta charset="UTF-8">
 </head>
 
-    {{ JSGlue.include() }}
     <link rel="stylesheet" href="static/css/main.css">
 
 <body style="background-color:#DDD;">
@@ -15,8 +14,12 @@
             <tr>
                 <td width="25%" style="text-align: center; ">
                     <div>
-                        Veuillez sélectionner une image :
-                        <input type="file" id="fileInput">
+                        <form method=post enctype=multipart/form-data>
+                            <input type=file name='file' id="fileInput">
+                            <input type=submit value=Upload id="button">
+                        </form>
+<!--                        Veuillez sélectionner une image :-->
+<!--                        <input type="file" id="fileInput">-->
                     </div>
                 </td>
                 <td>
@@ -28,15 +31,6 @@
             </tr>
         </tbody>
     </table>
-
-
-
-
-<!--    <div>-->
-<!--        Select an image file:-->
-<!--        <input type="file" id="fileInput">-->
-<!--    </div>-->
-
 
     {% block content %}
     {% endblock content%}
