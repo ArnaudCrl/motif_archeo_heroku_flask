@@ -40,51 +40,47 @@ def allowed_file(filename):
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
+        
         # check if the post request has the file part
-        if 'file' not in request.files:
+        if 'file' not in request.form:
             flash('No file part')
             return redirect(request.url)
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
+        file = request.form['file']
 
-        if file and allowed_file(file.filename):
-            filename = "temp." + file.filename.split(".")[-1]
-            # filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        imgdata = base64.b64decode(str(file))
+        with Image.open(BytesIO(imgdata)) as image:
+            image.save(UPLOAD_FOLDER + 'temp.png')
+        
+       
+        pred, pred_idx, probs = learn.predict("downloads/temp.png")
+        classes = learn.dls.vocab
+        predictions = sorted(zip(classes, map(float, probs)), key=lambda p: p[1], reverse=True)
 
-            pred, pred_idx, probs = learn.predict("downloads/" + filename)
-            classes = learn.dls.vocab
-            predictions = sorted(zip(classes, map(float, probs)), key=lambda p: p[1], reverse=True)
+        path = "static/images/Vignettes/"
+        # print(os.listdir(path))
+        prediction = [str(predictions[0][0])[4:],
+                      str(predictions[1][0])[4:],
+                      str(predictions[2][0])[4:]]
 
-            path = "static/images/Vignettes/"
-            # print(os.listdir(path))
-            prediction = [str(predictions[0][0])[4:],
-                          str(predictions[1][0])[4:],
-                          str(predictions[2][0])[4:]]
+        probas = [str('%.2f' % (predictions[0][1] * 100)) + "%",
+                  str('%.2f' % (predictions[1][1] * 100)) + "%",
+                  str('%.2f' % (predictions[2][1] * 100)) + "%"]
 
-            probas = [str('%.2f' % (predictions[0][1] * 100)) + "%",
-                      str('%.2f' % (predictions[1][1] * 100)) + "%",
-                      str('%.2f' % (predictions[2][1] * 100)) + "%"]
+        result1 = []
+        result2 = []
+        result3 = []
 
-            result1 = []
-            result2 = []
-            result3 = []
+        for f in os.listdir(path + prediction[0]):
+            result1.append("""static/images/Vignettes/{}/{}""".format(prediction[0], f))
 
-            for f in os.listdir(path + prediction[0]):
-                result1.append("""static/images/Vignettes/{}/{}""".format(prediction[0], f))
+        for f in os.listdir(path + prediction[1]):
+            result2.append("""static/images/Vignettes/{}/{}""".format(prediction[1], f))
 
-            for f in os.listdir(path + prediction[1]):
-                result2.append("""static/images/Vignettes/{}/{}""".format(prediction[1], f))
+        for f in os.listdir(path + prediction[2]):
+            result3.append("""static/images/Vignettes/{}/{}""".format(prediction[2], f))
 
-            for f in os.listdir(path + prediction[2]):
-                result3.append("""static/images/Vignettes/{}/{}""".format(prediction[2], f))
-
-            return render_template('result.html', prediction=prediction, probas=probas, result1=result1, result2=result2,
-                                   result3=result3)
+        return render_template('result.html', prediction=prediction, probas=probas, result1=result1, result2=result2,
+                               result3=result3)
 
     return render_template('index.html')
 
