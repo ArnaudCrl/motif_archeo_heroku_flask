@@ -5,6 +5,7 @@ import asyncio, aiohttp
 from io import BytesIO
 from fastai.vision.all import *
 from PIL import Image
+import base64
 import os
 
 path = Path(__file__).parent
