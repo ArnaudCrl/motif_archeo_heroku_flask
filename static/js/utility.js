@@ -15,7 +15,7 @@ function fileChange(e) {
 
             var image = new Image();
             image.onload = function(imageEvent) {
-                var max_size = 10;
+                var max_size = 512;
                 var w = image.width;
                 var h = image.height;
                  console.log("width:",w, "height:", h);
