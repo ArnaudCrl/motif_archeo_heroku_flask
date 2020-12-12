@@ -14,8 +14,9 @@
             <tr>
                 <td width="25%" style="text-align: center; ">
                     <div>
+			<input type=file id="fileInput">
                         <form method=post enctype=multipart/form-data>
-                            <input type=file name='file' id="fileInput">
+                            <input name='file' type="hidden" id="uploaded_file" value="">
                             <input type=submit value=Upload id="button">
                         </form>
 <!--                        Veuillez sélectionner une image :-->
