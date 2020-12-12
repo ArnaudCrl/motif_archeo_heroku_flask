@@ -7,4 +7,3 @@ flask
 asyncio
 aiohttp
 pillow
-base64
