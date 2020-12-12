@@ -1,4 +1,6 @@
 from io import BytesIO
+from PIL import Image
+import base64
 from flask import Flask, request, render_template, flash, redirect, url_for
 import asyncio, aiohttp
 from fastai.vision.all import *
