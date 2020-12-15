@@ -14,8 +14,8 @@
                     <tr>
                         <td style="text-align: left;">
                             <p>
-                                <strong>&nbsp;nom de la sous catégorie</strong>
-                                <img style="display: block; margin-left: auto; margin-right: auto;" src="{{ result }}" alt="" width="100%" height="auto" />
+                                <strong>&nbsp;{{ result[1] }} </strong>
+                                <img style="display: block; margin-left: auto; margin-right: auto;" src="{{ result[0] }}" alt="" width="100%" height="auto" />
                             </p>
                         </td>
                     </tr>
@@ -34,7 +34,8 @@
                 {% for result in result2 %}
                     <tr>
                         <td style="text-align: left;">
-                            <p><strong>&nbsp;nom de la sous catégorie </strong><img style="display: block; margin-left: auto; margin-right: auto;" src="{{ result }}" alt="" width="100%" height="auto" /></p>
+                            <strong>&nbsp;{{ result[1] }} </strong>
+                            <img style="display: block; margin-left: auto; margin-right: auto;" src="{{ result[0] }}" alt="" width="100%" height="auto" /></p>
                         </td>
                     </tr>
                 {% endfor %}
@@ -51,7 +52,8 @@
                 {% for result in result3 %}
                     <tr>
                         <td style="text-align: left;">
-                            <p><strong>&nbsp;nom de la sous catégorie </strong><img class="zoom" style="display: block; margin-left: auto; margin-right: auto; " src="{{ result }}" alt="" width="100%" height="auto" /></p>
+                            <strong>&nbsp;{{ result[1] }} </strong>
+                            <img class="zoom" style="display: block; margin-left: auto; margin-right: auto; " src="{{ result[0] }}" alt="" width="100%" height="auto" /></p>
                         </td>
                     </tr>
                 {% endfor %}
