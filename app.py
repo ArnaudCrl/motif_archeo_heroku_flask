@@ -75,15 +75,15 @@ def upload_file():
 
         for sub_class in os.listdir(path + prediction[0]):
             for image in os.listdir(path + prediction[0] + "/" + sub_class):
-                result1.append("""static/images/Vignettes/{}/{}/{}""".format(prediction[0], sub_class, image))
+                result1.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[0], sub_class, image), sub_class))
 
         for sub_class in os.listdir(path + prediction[1]):
             for image in os.listdir(path + prediction[1] + "/" + sub_class):
-                result2.append("""static/images/Vignettes/{}/{}/{}""".format(prediction[1], sub_class, image))
+                result2.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[1], sub_class, image), sub_class))
 
         for sub_class in os.listdir(path + prediction[2]):
             for image in os.listdir(path + prediction[2] + "/" + sub_class):
-                result3.append("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image))
+                result3.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image), sub_class))
 
         return render_template('result.html', prediction=prediction, probas=probas, result1=result1, result2=result2,
                                result3=result3)
