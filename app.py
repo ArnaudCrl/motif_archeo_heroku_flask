@@ -216,6 +216,8 @@ def allowed_file(filename):
 def upload_file():
     if request.method == 'POST':
         
+        print("post request")
+        
         # check if the post request has the file part
         if 'file' not in request.form:
             flash('No file part')
@@ -236,7 +238,7 @@ def upload_file():
         prediction = [str(predictions[0][0])[4:],
                       str(predictions[1][0])[4:],
                       str(predictions[2][0])[4:]]
-        print(prediction)
+        print(prediction[0])
 
         probas = [str('%.2f' % (predictions[0][1] * 100)) + "%",
                   str('%.2f' % (predictions[1][1] * 100)) + "%",
