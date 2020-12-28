@@ -213,6 +213,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/', methods=['GET', 'POST'])
+@app.route('/None', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         
@@ -268,6 +269,11 @@ def upload_file():
                     result3.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image), prediction[2], dico.get(prediction[2])))
                 else:
                     result3.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image), sub_class, dico.get(sub_class)))
+                    
+                    
+        return render_template('result.html', prediction=prediction, probas=probas, result1=result1,
+                       result2=result2,
+                       result3=result3)
 
     return render_template('index.html')
 
