@@ -13,10 +13,12 @@
                 {% for result in result1 %}
                     <tr>
                         <td style="text-align: left;">
-                            <p>
-                                <strong>&nbsp;{{ result[1] }} </strong>
-                                <img style="display: block; margin-left: auto; margin-right: auto;" src="{{ result[0] }}" alt="" width="100%" height="auto" />
-                            </p>
+                            <a href="{{ result[2] }}" target="_blank" rel="noopener noreferrer">
+                                <p>
+                                    <strong>&nbsp;{{ result[1] }} </strong>
+                                    <img style="display: block; margin-left: auto; margin-right: auto;" src="{{ result[0] }}" alt="" width="100%" height="auto" />
+                                </p>
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -34,8 +36,12 @@
                 {% for result in result2 %}
                     <tr>
                         <td style="text-align: left;">
-                            <strong>&nbsp;{{ result[1] }} </strong>
-                            <img style="display: block; margin-left: auto; margin-right: auto;" src="{{ result[0] }}" alt="" width="100%" height="auto" /></p>
+                            <a href="{{ result[2] }}" target="_blank" rel="noopener noreferrer">
+                                <p>
+                                    <strong>&nbsp;{{ result[1] }} </strong>
+                                    <img style="display: block; margin-left: auto; margin-right: auto;" src="{{ result[0] }}" alt="" width="100%" height="auto" />
+                                </p>
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -52,8 +58,12 @@
                 {% for result in result3 %}
                     <tr>
                         <td style="text-align: left;">
-                            <strong>&nbsp;{{ result[1] }} </strong>
-                            <img class="zoom" style="display: block; margin-left: auto; margin-right: auto; " src="{{ result[0] }}" alt="" width="100%" height="auto" /></p>
+                            <a href="{{ result[2] }}" target="_blank" rel="noopener noreferrer">
+                                <p>
+                                    <strong>&nbsp;{{ result[1] }} </strong>
+                                    <img style="display: block; margin-left: auto; margin-right: auto;" src="{{ result[0] }}" alt="" width="100%" height="auto" />
+                                </p>
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}
