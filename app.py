@@ -232,13 +232,18 @@ def upload_file():
        
         pred, pred_idx, probs = learn.predict("downloads/temp.png")
         classes = learn.dls.vocab
+        print(classes)
         predictions = sorted(zip(classes, map(float, probs)), key=lambda p: p[1], reverse=True)
 
         path = "static/images/Vignettes/"
 #         # print(os.listdir(path))
-        prediction = [str(predictions[0][0])[4:],
-                      str(predictions[1][0])[4:],
-                      str(predictions[2][0])[4:]]
+#         prediction = [str(predictions[0][0])[4:],
+#                       str(predictions[1][0])[4:],
+#                       str(predictions[2][0])[4:]]
+    
+        prediction = [str(predictions[0][0]),
+                      str(predictions[1][0]),
+                      str(predictions[2][0])]
         print(prediction[0])
 
         probas = [str('%.2f' % (predictions[0][1] * 100)) + "%",
