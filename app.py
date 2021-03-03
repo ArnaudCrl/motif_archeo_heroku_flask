@@ -48,9 +48,15 @@ def upload():
     predictions = sorted(zip(classes, map(float, probs)), key=lambda p: p[1], reverse=True)
   
 
-    prediction = [str(predictions[0][0])[4:],
-                  str(predictions[1][0])[4:],
-                  str(predictions[2][0])[4:]]
+#     prediction = [str(predictions[0][0])[4:],
+#                   str(predictions[1][0])[4:],
+#                   str(predictions[2][0])[4:]]
+
+
+
+    prediction = [str(predictions[0][0]),
+                  str(predictions[1][0]),
+                  str(predictions[2][0])]
                   
     probas = [str('%.2f'%(predictions[0][1]*100)) + "%",
               str('%.2f'%(predictions[1][1]*100)) + "%",
