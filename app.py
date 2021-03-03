@@ -12,7 +12,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 path = Path(__file__).parent
 
-model_file_url = 'https://www.dropbox.com/s/tbzsg98i43jg9uo/surfacique_seulement.pkl?dl=1'
+model_file_url = 'https://www.dropbox.com/s/cewyihgl6nb6djv/surfacique_seulement.pkl?dl=1'
 model_file_name = 'surfacique_seulement.pkl'
 model_path = path
 
@@ -237,13 +237,10 @@ def upload_file():
 
         path = "static/images/Vignettes/"
 #         # print(os.listdir(path))
-#         prediction = [str(predictions[0][0])[4:],
-#                       str(predictions[1][0])[4:],
-#                       str(predictions[2][0])[4:]]
-    
-        prediction = [str(predictions[0][0]),
-                      str(predictions[1][0]),
-                      str(predictions[2][0])]
+        prediction = [str(predictions[0][0])[4:],
+                      str(predictions[1][0])[4:],
+                      str(predictions[2][0])[4:]]
+
         print(prediction[0])
 
         probas = [str('%.2f' % (predictions[0][1] * 100)) + "%",
