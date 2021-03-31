@@ -212,6 +212,11 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.errorhandler(500)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return "mince", 500
+
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/None', methods=['GET', 'POST'])
 def upload_file():
