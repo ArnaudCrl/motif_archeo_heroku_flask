@@ -12,8 +12,8 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 path = Path(__file__).parent
 
-model_file_url = 'https://www.dropbox.com/s/cewyihgl6nb6djv/surfacique_seulement.pkl?dl=1'
-model_file_name = 'surfacique_seulement.pkl'
+model_file_url = 'https://www.dropbox.com/s/swydgx4eaxj3h4h/archeo_bw.pkl?dl=1'
+model_file_name = 'archeo_bw.pkl'
 model_path = path
 
 dico = {"MGP_Borniga_Cimiez": "https://drive.google.com/drive/folders/1pib36Qdpi2lHPV-h_HZV72MCs8QX8V4L?usp=sharing",
