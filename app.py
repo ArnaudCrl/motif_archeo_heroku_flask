@@ -468,7 +468,7 @@ def upload_file():
                         result3.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image), "", dico.get(sub_class)))
                 else:
                     try:
-                        result3.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image), dico2.get(sub_class]), dico.get(sub_class)))
+                        result3.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image), dico2.get(sub_class), dico.get(sub_class)))
                     except:
                         result3.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image), "", dico.get(sub_class)))
                     
