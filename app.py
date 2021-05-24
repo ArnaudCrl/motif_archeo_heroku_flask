@@ -189,7 +189,7 @@ dico = {"MGP_Borniga_Cimiez" : "https://graphbz.eu/spip.php?article6334",
 "Moora" : "https://graphbz.eu/spip.php?article6212"}
 
 
-dico2 : {"MGP_Borniga_Cimiez" : "032-01",
+dico2 = {"MGP_Borniga_Cimiez" : "032-01",
 "MGP_Larnaud_Limone" : "032-02",
 "MGP_Nessi_Camaiore" : "032-04",
 "MGP_Pariana_Paveze" : "032-03",
@@ -417,9 +417,9 @@ def upload_file():
                       str(predictions[1][0])[4:],
                       str(predictions[2][0])[4:]]
     
-        prediction2 = [dico2.get(str(predictions[0][0])[4:],""),
-                      dico2.get(str(predictions[1][0])[4:],""),
-                      dico2.get(str(predictions[2][0])[4:],"")]
+#         prediction2 = [dico2.get(str(predictions[0][0])[4:],""),
+#                       dico2.get(str(predictions[1][0])[4:],""),
+#                       dico2.get(str(predictions[2][0])[4:],"")]
 
         print(prediction[0])
 
@@ -459,7 +459,7 @@ def upload_file():
                     result3.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image), dico2.get(sub_class,""), dico.get(sub_class)))
                     
                     
-        return render_template('result.html', prediction=prediction2, probas=probas, result1=result1,
+        return render_template('result.html', prediction=prediction, probas=probas, result1=result1,
                        result2=result2,
                        result3=result3)
 
