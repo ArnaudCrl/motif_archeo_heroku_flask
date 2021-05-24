@@ -416,6 +416,10 @@ def upload_file():
         prediction = [str(predictions[0][0])[4:],
                       str(predictions[1][0])[4:],
                       str(predictions[2][0])[4:]]
+    
+        prediction2 = [dict2.get(str(predictions[0][0])[4:],""),
+                      dict2.get(str(predictions[1][0])[4:],""),
+                      dict2.get(str(predictions[2][0])[4:],"")]
 
         print(prediction[0])
 
@@ -430,15 +434,10 @@ def upload_file():
         for sub_class in os.listdir(path + prediction[0]):
             for image in os.listdir(path + prediction[0] + "/" + sub_class):
                 if sub_class == "general":
-                    try:
-                        result1.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[0], sub_class, image), dico2.get(prediction[0]), dico.get(sub_class)))
-                    except:
-                        result1.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[0], sub_class, image), "", dico.get(sub_class)))
+                    result1.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[0], sub_class, image), dico2.get(prediction[0],""), dico.get(sub_class)))
+
                 else:
-                    try:
-                        result1.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[0], sub_class, image), dico2.get(sub_class), dico.get(sub_class)))
-                    except:
-                        result1.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[0], sub_class, image), "", dico.get(sub_class)))
+                    result1.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[0], sub_class, image), dico2.get(sub_class,""), dico.get(sub_class)))
                     
                     
                     
@@ -446,34 +445,21 @@ def upload_file():
         for sub_class in os.listdir(path + prediction[1]):
             for image in os.listdir(path + prediction[1] + "/" + sub_class):
                 if sub_class == "general":                    
-                    try:
-                        result2.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[1], sub_class, image), dico2.get(prediction[1]), dico.get(sub_class)))
-                    except:
-                        result2.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[1], sub_class, image), "", dico.get(sub_class)))
+                    result2.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[1], sub_class, image), dico2.get(prediction[1],""), dico.get(sub_class)))
                 else:
-                    try:
-                        result2.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[1], sub_class, image), dico2.get(sub_class), dico.get(sub_class)))
-                    except:
-                        result2.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[1], sub_class, image), "", dico.get(sub_class)))
-                        
+                    result2.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[1], sub_class, image), dico2.get(sub_class,""), dico.get(sub_class)))
                         
                         
 
         for sub_class in os.listdir(path + prediction[2]):
             for image in os.listdir(path + prediction[2] + "/" + sub_class):
                 if sub_class == "general":
-                    try:
-                        result3.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image), dico2.get(prediction[2]), dico.get(sub_class)))
-                    except:
-                        result3.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image), "", dico.get(sub_class)))
+                    result3.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image), dico2.get(prediction[2],""), dico.get(sub_class)))
                 else:
-                    try:
-                        result3.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image), dico2.get(sub_class), dico.get(sub_class)))
-                    except:
-                        result3.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image), "", dico.get(sub_class)))
+                    result3.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image), dico2.get(sub_class,""), dico.get(sub_class)))
                     
                     
-        return render_template('result.html', prediction=prediction, probas=probas, result1=result1,
+        return render_template('result.html', prediction=prediction2, probas=probas, result1=result1,
                        result2=result2,
                        result3=result3)
 
