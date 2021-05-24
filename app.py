@@ -417,9 +417,9 @@ def upload_file():
                       str(predictions[1][0])[4:],
                       str(predictions[2][0])[4:]]
     
-        prediction2 = [dict2.get(str(predictions[0][0])[4:],""),
-                      dict2.get(str(predictions[1][0])[4:],""),
-                      dict2.get(str(predictions[2][0])[4:],"")]
+        prediction2 = [dico2.get(str(predictions[0][0])[4:],""),
+                      dico2.get(str(predictions[1][0])[4:],""),
+                      dico2.get(str(predictions[2][0])[4:],"")]
 
         print(prediction[0])
 
