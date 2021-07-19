@@ -5,7 +5,13 @@ from flask import Flask, request, render_template, flash, redirect, url_for
 import asyncio, aiohttp
 from fastai.vision.all import *
 import os
+from operator import itemgetter
 
+# REMOVE FOR DEPLOYMENT !!!!!!
+import pathlib
+temp = pathlib.PosixPath
+pathlib.PosixPath = pathlib.WindowsPath
+# !!!!!!!!!!!!
 
 UPLOAD_FOLDER = 'downloads/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -375,7 +381,6 @@ async def setup_learner():
     return learn
 
 learn = asyncio.run(setup_learner())
-print("before app def")
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -408,8 +413,8 @@ def upload_file():
        
         pred, pred_idx, probs = learn.predict("downloads/temp.png")
         classes = learn.dls.vocab
-        print(classes)
         predictions = sorted(zip(classes, map(float, probs)), key=lambda p: p[1], reverse=True)
+        print(classes)
 
         path = "static/images/Vignettes/"
 #         # print(os.listdir(path))
@@ -420,8 +425,8 @@ def upload_file():
 #         prediction2 = [dico2.get(str(predictions[0][0])[4:],""),
 #                       dico2.get(str(predictions[1][0])[4:],""),
 #                       dico2.get(str(predictions[2][0])[4:],"")]
-
-        print(prediction[0])
+#         prediction[1] = "jambières_triangles"
+        print(prediction)
 
         probas = [str('%.2f' % (predictions[0][1] * 100)) + "%",
                   str('%.2f' % (predictions[1][1] * 100)) + "%",
@@ -439,8 +444,7 @@ def upload_file():
                 else:
                     result1.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[0], sub_class, image), dico2.get(sub_class,""), dico.get(sub_class)))
                     
-                    
-                    
+
 
         for sub_class in os.listdir(path + prediction[1]):
             for image in os.listdir(path + prediction[1] + "/" + sub_class):
@@ -457,11 +461,13 @@ def upload_file():
                     result3.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image), dico2.get(prediction[2],""), dico.get(sub_class)))
                 else:
                     result3.append(("""static/images/Vignettes/{}/{}/{}""".format(prediction[2], sub_class, image), dico2.get(sub_class,""), dico.get(sub_class)))
-                    
-                    
-        return render_template('result.html', prediction=prediction, probas=probas, result1=result1,
-                       result2=result2,
-                       result3=result3)
+
+
+
+        return render_template('result.html', prediction=prediction, probas=probas,
+                        result1=sorted(result1, key=itemgetter(1)),
+                        result2=sorted(result2, key=itemgetter(1)),
+                        result3=sorted(result3, key=itemgetter(1)))
 
     return render_template('index.html')
 
