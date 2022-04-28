@@ -6,7 +6,6 @@ from PIL import Image
 from torchvision import models
 import dowload_model
 
-
 # load model
 net = models.resnet18(pretrained=True)
 device = torch.device('cpu')
@@ -17,7 +16,6 @@ PATH = "torch_resnet_model.pt"
 
 net.load_state_dict(torch.load(PATH, map_location=device))
 net.eval()
-
 
 
 # image -> tensor
@@ -34,6 +32,7 @@ def transform_image(image_bytes):
     image = Image.open(io.BytesIO(image_bytes))
     image = image.convert("RGB")
     return transform(image).unsqueeze(0)
+
 
 # predict
 def get_prediction(image_tensor):
