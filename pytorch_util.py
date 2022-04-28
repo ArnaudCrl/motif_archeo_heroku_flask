@@ -4,6 +4,7 @@ import torch.nn as nn
 import torchvision.transforms as T
 from PIL import Image
 from torchvision import models
+import dowload_model
 
 
 # load model
@@ -12,10 +13,11 @@ device = torch.device('cpu')
 num_ftrs = net.fc.in_features
 net.fc = nn.Linear(num_ftrs, 46)
 
-PATH = "resnet.pt"
+PATH = "torch_resnet_model.pt"
 
 net.load_state_dict(torch.load(PATH, map_location=device))
 net.eval()
+
 
 
 # image -> tensor

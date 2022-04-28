@@ -2,19 +2,8 @@
 
 import base64
 from flask import Flask, request, render_template, flash, redirect, jsonify
-import  aiohttp
 import os
-from pathlib import Path
 from pytorch_util import *
-
-
-UPLOAD_FOLDER = 'downloads/'
-
-path = Path(__file__).parent
-
-model_file_url = 'https://www.dropbox.com/s/swydgx4eaxj3h4h/archeo_bw.pkl?dl=1'
-model_file_name = 'archeo_bw.pkl'
-model_path = path
 
 dico = {"032-01": "https://graphbz.eu/spip.php?article6334",
         "032-02": "https://graphbz.eu/spip.php?article6335",
@@ -187,17 +176,8 @@ dico = {"032-01": "https://graphbz.eu/spip.php?article6334",
         "043-01": "https://graphbz.eu/spip.php?article6368",
         "045-01": "https://graphbz.eu/spip.php?article6212"}
 
-
-async def download_file(url, dest):
-    if dest.exists(): return
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
-            data = await response.read()
-            with open(dest, 'wb') as f: f.write(data)
-
-
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = 'downloads/'
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
@@ -257,24 +237,27 @@ def fill_template(probs):
 
     for sub_class in os.listdir(os.sep.join([path, prediction[0]])):
         for image in os.listdir(os.sep.join([path, prediction[0], sub_class])):
-            result1.append((os.sep.join([path, prediction[0], sub_class, image]), str(prediction[0]) + "-" + str(sub_class),
-                            dico.get(str(prediction[0]) + "-" + str(sub_class))))
+            result1.append(
+                (os.sep.join([path, prediction[0], sub_class, image]), str(prediction[0]) + "-" + str(sub_class),
+                 dico.get(str(prediction[0]) + "-" + str(sub_class))))
 
     for sub_class in os.listdir(os.sep.join([path, prediction[1]])):
         for image in os.listdir(os.sep.join([path, prediction[1], sub_class])):
-            result2.append((os.sep.join([path, prediction[1], sub_class, image]), str(prediction[1]) + "-" + str(sub_class),
-                        dico.get(str(prediction[1]) + "-" + str(sub_class))))
+            result2.append(
+                (os.sep.join([path, prediction[1], sub_class, image]), str(prediction[1]) + "-" + str(sub_class),
+                 dico.get(str(prediction[1]) + "-" + str(sub_class))))
 
     for sub_class in os.listdir(os.sep.join([path, prediction[2]])):
         for image in os.listdir(os.sep.join([path, prediction[2], sub_class])):
-            result3.append((os.sep.join([path, prediction[2], sub_class, image]), str(prediction[2]) + "-" + str(sub_class),
-                        dico.get(str(prediction[2]) + "-" + str(sub_class))))
+            result3.append(
+                (os.sep.join([path, prediction[2], sub_class, image]), str(prediction[2]) + "-" + str(sub_class),
+                 dico.get(str(prediction[2]) + "-" + str(sub_class))))
 
     return render_template('result.html', prediction=prediction,
-                                          probas=probas,
-                                          result1=result1,
-                                          result2=result2,
-                                          result3=result3)
+                           probas=probas,
+                           result1=result1,
+                           result2=result2,
+                           result3=result3)
 
 
 if __name__ == '__main__':
