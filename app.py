@@ -3,21 +3,21 @@
 from io import BytesIO
 from PIL import Image
 import base64
-from flask import Flask, request, render_template, flash, redirect, url_for
+from flask import Flask, request, render_template, flash, redirect, url_for, jsonify
 import asyncio, aiohttp
-from fastai.vision.all import *
 import os
 from operator import itemgetter
+from pathlib import Path
+from pytorch_util import *
 
-# # REMOVE FOR DEPLOYMENT !!!!!!
-# import pathlib
-#
-# temp = pathlib.PosixPath
-# pathlib.PosixPath = pathlib.WindowsPath
-# # !!!!!!!!!!!!
+# REMOVE FOR DEPLOYMENT !!!!!!
+import pathlib
+
+temp = pathlib.PosixPath
+pathlib.PosixPath = pathlib.WindowsPath
+# !!!!!!!!!!!!
 
 UPLOAD_FOLDER = 'downloads/'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 path = Path(__file__).parent
 
@@ -196,7 +196,6 @@ dico = {"MGP_Borniga_Cimiez": "https://graphbz.eu/spip.php?article6334",
         "brassart_Ha_tardif": "https://graphbz.eu/spip.php?article6369",
         "brassart_Ha_precoce": "https://graphbz.eu/spip.php?article6368",
         "Moora": "https://graphbz.eu/spip.php?article6212"}
-
 dico2 = {"MGP_Borniga_Cimiez": "032-01",
          "MGP_Larnaud_Limone": "032-02",
          "MGP_Nessi_Camaiore": "032-04",
@@ -369,7 +368,6 @@ dico2 = {"MGP_Borniga_Cimiez": "032-01",
          "brassart_Ha_precoce": "043-01",
          "Moora": "045-01"}
 
-
 async def download_file(url, dest):
     if dest.exists(): return
     async with aiohttp.ClientSession() as session:
@@ -378,18 +376,11 @@ async def download_file(url, dest):
             with open(dest, 'wb') as f: f.write(data)
 
 
-async def setup_learner():
-    await download_file(model_file_url, model_path / model_file_name)
-    learn = load_learner(model_path / model_file_name)
-    print("learner loaded !")
-    return learn
 
-
-learn = asyncio.run(setup_learner())
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -405,95 +396,101 @@ def page_not_found(e):
 def upload_file():
     if request.method == 'POST':
 
-        print("post request")
-
-        # check if the post request has the file part
+    # check if the post request has the file part
         if 'file' not in request.form:
             flash('No file part')
             return redirect(request.url)
         file = request.form['file']
-
         imgdata = base64.b64decode(str(file))
-        with Image.open(BytesIO(imgdata)) as image:
-            image.save(UPLOAD_FOLDER + 'temp.png')
-
-        _, _, probs = learn.predict("downloads/temp.png")
-        # classes = learn.dls.vocab
-        classes = ['gpe_Agde_évolué', 'gpe_Angleterre', 'gpe_Auvernier', 'gpe_B_Danube', 'gpe_Bignan', 'gpe_Clans', 'gpe_Corcelettes', 'gpe_Dhrovice', 'gpe_Estavayer', 'gpe_Haguenau', 'gpe_LT_A', 'gpe_Leupolz', 'gpe_Locarno', 'gpe_Lunebourg', 'gpe_Macédoine', 'gpe_Mecklenburg_obliques', 'gpe_Mecklenburg_triangles', 'gpe_Mitterkirchen', 'gpe_Mola', 'gpe_Moora', 'gpe_Morges', 'gpe_Ph_0', 'gpe_Pologne', 'gpe_Pologne_Ha', 'gpe_Rosan', 'gpe_SAY', 'gpe_Subingen', 'gpe_Ukraine', 'gpe_Vinol', 'gpe_Wabern', 'gpe_Zerba', 'gpe_barques_hongroises', 'gpe_brassart_Ha', 'gpe_c_Danube', 'gpe_chevrons', 'gpe_coubes_verticales', 'gpe_géometrique_et_anthopomorphe', 'gpe_jambières_barques_et_lignes', 'gpe_jambières_triangles', 'gpe_kasidol', 'gpe_morave', 'gpe_nord', 'gpe_réniforme', 'gpe_tampons', 'gpe_tores', 'gpe_triangles_Hongrie']
-        predictions = sorted(zip(classes, map(float, probs)), key=lambda p: p[1], reverse=True)
-        print(classes)
-
-        path = os.sep.join(["static", "images", "Vignettes"])
-        #         # print(os.listdir(path))
-        prediction = [str(predictions[0][0])[4:],
-                      str(predictions[1][0])[4:],
-                      str(predictions[2][0])[4:]]
-
-        #         prediction2 = [dico2.get(str(predictions[0][0])[4:],""),
-        #                       dico2.get(str(predictions[1][0])[4:],""),
-        #                       dico2.get(str(predictions[2][0])[4:],"")]
-        # prediction[1] = "jambières_triangles"
-        print(prediction)
-
-        probas = [str('%.2f' % (predictions[0][1] * 100)) + "%",
-                  str('%.2f' % (predictions[1][1] * 100)) + "%",
-                  str('%.2f' % (predictions[2][1] * 100)) + "%"]
-
-        result1 = []
-        result2 = []
-        result3 = []
-
-        for sub_class in os.listdir(os.sep.join([path, prediction[0]])):
-            for image in os.listdir(os.sep.join([path, prediction[0], sub_class])):
-                if sub_class == "general":
-                    result1.append((os.sep.join([path, prediction[0], sub_class, image]), dico2.get(prediction[0], ""),
-                                    dico.get(sub_class)))
-
-                else:
-                    result1.append((os.sep.join([path, prediction[0], sub_class, image]), dico2.get(sub_class, ""),
-                                    dico.get(sub_class)))
-
-        for sub_class in os.listdir(os.sep.join([path, prediction[1]])):
-            for image in os.listdir(os.sep.join([path, prediction[1], sub_class])):
-                if sub_class == "general":
-                    result2.append((os.sep.join([path, prediction[1], sub_class, image]), dico2.get(prediction[1], ""),
-                                    dico.get(sub_class)))
-
-                else:
-                    result2.append((os.sep.join([path, prediction[1], sub_class, image]), dico2.get(sub_class, ""),
-                                    dico.get(sub_class)))
-
-        for sub_class in os.listdir(os.sep.join([path, prediction[2]])):
-            for image in os.listdir(os.sep.join([path, prediction[2], sub_class])):
-                if sub_class == "general":
-                    result3.append((os.sep.join([path, prediction[2], sub_class, image]), dico2.get(prediction[2], ""),
-                                    dico.get(sub_class)))
-
-                else:
-                    result3.append((os.sep.join([path, prediction[2], sub_class, image]), dico2.get(sub_class, ""),
-                                    dico.get(sub_class)))
-
-        return render_template('result.html', prediction=prediction, probas=probas,
-                               result1=sorted(result1, key=itemgetter(1)),
-                               result2=sorted(result2, key=itemgetter(1)),
-                               result3=sorted(result3, key=itemgetter(1)))
+        try:
+            tensor = transform_image(imgdata)
+            prediction = get_prediction(tensor)
+            a = prediction.data
+            print(a)
+            fill_template(prediction.tolist()[0])
+        except:
+            return jsonify({'error': 'error during prediction'})
 
     return render_template('index.html')
 
+# @app.route('/', methods=['GET', 'POST'])
+# @app.route('/None', methods=['GET', 'POST'])
+# def upload_file():
+#     if request.method == 'POST':
+#         # check if the post request has the file part
+#         if 'file' not in request.form:
+#             flash('No file part')
+#             return redirect(request.url)
+#         file = request.form['file']
+#
+#         imgdata = base64.b64decode(str(file))
+#         with Image.open(BytesIO(imgdata)) as image:
+#             image.save(UPLOAD_FOLDER + 'temp.png')
+#
+#         _, _, probs = learn.predict("downloads/temp.png")
 
-def make_square(im, desired_size=512):
-    old_size = im.size  # old_size[0] is in (width, height) format
+def fill_template(probs):
+    classes = ['001', '002', '003', '004', '005', '006', '007', '008', '009', '010', '011', '012',
+               '013', '014', '015', '016', '017', '018', '019', '020', '021', '022', '023', '024',
+               '025', '026', '027', '028', '029', '030', '031', '032', '033', '034', '035', '036',
+               '037', '038', '039', '040', '041', '042', '043', '044', '045', '046']
+    predictions = sorted(zip(classes, map(float, probs)), key=lambda p: p[1], reverse=True)
+    print(classes)
 
-    ratio = float(desired_size) / max(old_size)
-    new_size = tuple([int(x * ratio) for x in old_size])
+    path = os.sep.join(["static", "images", "Vignettes"])
+    #         # print(os.listdir(path))
+    prediction = [str(predictions[0][0])[4:],
+                  str(predictions[1][0])[4:],
+                  str(predictions[2][0])[4:]]
 
-    im = im.resize(new_size, Image.ANTIALIAS)
+    #         prediction2 = [dico2.get(str(predictions[0][0])[4:],""),
+    #                       dico2.get(str(predictions[1][0])[4:],""),
+    #                       dico2.get(str(predictions[2][0])[4:],"")]
+    # prediction[1] = "jambières_triangles"
+    print(prediction)
 
-    new_im = Image.new("L", (desired_size, desired_size))
-    new_im.paste(im, ((desired_size - new_size[0]) // 2,
-                      (desired_size - new_size[1]) // 2))
+    probas = [str('%.2f' % (predictions[0][1] * 100)) + "%",
+              str('%.2f' % (predictions[1][1] * 100)) + "%",
+              str('%.2f' % (predictions[2][1] * 100)) + "%"]
 
-    return new_im
+    result1 = []
+    result2 = []
+    result3 = []
+
+    for sub_class in os.listdir(os.sep.join([path, prediction[0]])):
+        for image in os.listdir(os.sep.join([path, prediction[0], sub_class])):
+            if sub_class == "general":
+                result1.append((os.sep.join([path, prediction[0], sub_class, image]), dico2.get(prediction[0], ""),
+                                dico.get(sub_class)))
+
+            else:
+                result1.append((os.sep.join([path, prediction[0], sub_class, image]), dico2.get(sub_class, ""),
+                                dico.get(sub_class)))
+
+    for sub_class in os.listdir(os.sep.join([path, prediction[1]])):
+        for image in os.listdir(os.sep.join([path, prediction[1], sub_class])):
+            if sub_class == "general":
+                result2.append((os.sep.join([path, prediction[1], sub_class, image]), dico2.get(prediction[1], ""),
+                                dico.get(sub_class)))
+
+            else:
+                result2.append((os.sep.join([path, prediction[1], sub_class, image]), dico2.get(sub_class, ""),
+                                dico.get(sub_class)))
+
+    for sub_class in os.listdir(os.sep.join([path, prediction[2]])):
+        for image in os.listdir(os.sep.join([path, prediction[2], sub_class])):
+            if sub_class == "general":
+                result3.append((os.sep.join([path, prediction[2], sub_class, image]), dico2.get(prediction[2], ""),
+                                dico.get(sub_class)))
+
+            else:
+                result3.append((os.sep.join([path, prediction[2], sub_class, image]), dico2.get(sub_class, ""),
+                                dico.get(sub_class)))
+
+    return render_template('result.html', prediction=prediction, probas=probas,
+                           result1=sorted(result1, key=itemgetter(1)),
+                           result2=sorted(result2, key=itemgetter(1)),
+                           result3=sorted(result3, key=itemgetter(1)))
 
 
 if __name__ == '__main__':
