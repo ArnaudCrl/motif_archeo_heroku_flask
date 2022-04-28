@@ -405,9 +405,8 @@ def upload_file():
         try:
             tensor = transform_image(imgdata)
             prediction = get_prediction(tensor)
-            a = prediction.data
-            print(a)
-            fill_template(prediction.tolist()[0])
+            pred_percent = torch.nn.functional.softmax(prediction)
+            fill_template(pred_percent.tolist()[0])
         except:
             return jsonify({'error': 'error during prediction'})
 
