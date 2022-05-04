@@ -2,7 +2,7 @@
 
 import base64
 from flask import Flask, request, render_template, flash, redirect, jsonify
-import os
+from pathlib import Path
 from pytorch_util import *
 
 dico = {"001-01": "https://graphbz.eu/spip.php?article6168",
@@ -222,7 +222,6 @@ def fill_template(probs):
                '037', '038', '039', '040', '041', '042', '043', '044', '045', '046']
     predictions = sorted(zip(classes, map(float, probs)), key=lambda p: p[1], reverse=True)
 
-    path = os.sep.join(["static", "images", "Vignettes"])
     prediction = [str(predictions[0][0]),
                   str(predictions[1][0]),
                   str(predictions[2][0])]
@@ -238,11 +237,12 @@ def fill_template(probs):
     result2 = []
     result3 = []
 
-    for sub_class in os.listdir(os.sep.join([path, prediction[0]])):
-        for image in os.listdir(os.sep.join([path, prediction[0], sub_class])):
-            result1.append(
-                (os.sep.join([path, prediction[0], sub_class, image]), str(prediction[0]) + "-" + str(sub_class),
-                 dico.get(str(prediction[0]) + "-" + str(sub_class))))
+    vignettes_path = Path("static/images/Vignettes")
+
+    for sub_class in Path(vignettes_path, prediction[0]).iterdir():
+        vignette_path = next(Path(sub_class).glob("*.jpg"))
+        vignette_name = str(prediction[0]) + "-" + str(sub_class)
+        result1.append(vignette_path, vignette_name, dico.get(vignette_name))
 
     for sub_class in os.listdir(os.sep.join([path, prediction[1]])):
         for image in os.listdir(os.sep.join([path, prediction[1], sub_class])):
