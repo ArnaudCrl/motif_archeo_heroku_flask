@@ -245,7 +245,7 @@ def fill_template(probs):
               str('%.2f' % (predictions[2][1] * 100)) + "%"]
 
     for p in probas:
-        p = "0.01" if p == "0.00" else p
+        p = "0.01%" if p == "0.00%" else p
 
     result1 = []
     result2 = []
