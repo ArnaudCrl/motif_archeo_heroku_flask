@@ -241,20 +241,18 @@ def fill_template(probs):
 
     for sub_class in Path(vignettes_path, prediction[0]).iterdir():
         vignette_path = next(Path(sub_class).glob("*.jpg"))
-        vignette_name = str(prediction[0]) + "-" + str(sub_class)
-        result1.append(vignette_path, vignette_name, dico.get(vignette_name))
+        vignette_name = str(prediction[0]) + "-" + str(sub_class.name)
+        result1.append((vignette_path, vignette_name, dico.get(vignette_name)))
 
-    for sub_class in os.listdir(os.sep.join([path, prediction[1]])):
-        for image in os.listdir(os.sep.join([path, prediction[1], sub_class])):
-            result2.append(
-                (os.sep.join([path, prediction[1], sub_class, image]), str(prediction[1]) + "-" + str(sub_class),
-                 dico.get(str(prediction[1]) + "-" + str(sub_class))))
+    for sub_class in Path(vignettes_path, prediction[1]).iterdir():
+        vignette_path = next(Path(sub_class).glob("*.jpg"))
+        vignette_name = str(prediction[1]) + "-" + str(sub_class.name)
+        result2.append((vignette_path, vignette_name, dico.get(vignette_name)))
 
-    for sub_class in os.listdir(os.sep.join([path, prediction[2]])):
-        for image in os.listdir(os.sep.join([path, prediction[2], sub_class])):
-            result3.append(
-                (os.sep.join([path, prediction[2], sub_class, image]), str(prediction[2]) + "-" + str(sub_class),
-                 dico.get(str(prediction[2]) + "-" + str(sub_class))))
+    for sub_class in Path(vignettes_path, prediction[2]).iterdir():
+        vignette_path = next(Path(sub_class).glob("*.jpg"))
+        vignette_name = str(prediction[2]) + "-" + str(sub_class.name)
+        result3.append((vignette_path, vignette_name, dico.get(vignette_name)))
 
     return render_template('result.html', prediction=prediction,
                            probas=probas,
