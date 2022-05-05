@@ -253,17 +253,17 @@ def fill_template(probs):
 
     vignettes_path = Path("static/images/Vignettes")
 
-    for sub_class in Path(vignettes_path, prediction[0]).iterdir():
+    for sub_class in sorted(Path(vignettes_path, prediction[0]).iterdir()):
         vignette_path = next(Path(sub_class).glob("*.jpg"))
         vignette_name = str(prediction[0]) + "-" + str(sub_class.name)
         result1.append((vignette_path, vignette_name, dico.get(vignette_name)))
 
-    for sub_class in Path(vignettes_path, prediction[1]).iterdir():
+    for sub_class in sorted(Path(vignettes_path, prediction[1]).iterdir()):
         vignette_path = next(Path(sub_class).glob("*.jpg"))
         vignette_name = str(prediction[1]) + "-" + str(sub_class.name)
         result2.append((vignette_path, vignette_name, dico.get(vignette_name)))
 
-    for sub_class in Path(vignettes_path, prediction[2]).iterdir():
+    for sub_class in sorted(Path(vignettes_path, prediction[2]).iterdir()):
         vignette_path = next(Path(sub_class).glob("*.jpg"))
         vignette_name = str(prediction[2]) + "-" + str(sub_class.name)
         result3.append((vignette_path, vignette_name, dico.get(vignette_name)))
