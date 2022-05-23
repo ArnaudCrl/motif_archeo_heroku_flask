@@ -244,8 +244,10 @@ def fill_template(probs):
               str('%.2f' % (predictions[1][1] * 100)) + "%",
               str('%.2f' % (predictions[2][1] * 100)) + "%"]
 
-    for i in range(len(probas)):
-        probas[i] = "0.01%" if probas[i] == "0.00%" else probas[i]
+    probas[0] = "99.98%" if probas[0] == "100.00%" else probas[0]
+    probas[0] = "99.98%" if probas[0] == "99.99%" else probas[0]
+    probas[1] = "0.01%" if probas[1] == "0.00%" else probas[1]
+    probas[2] = "0.01%" if probas[2] == "0.00%" else probas[2]
 
     result1 = []
     result2 = []
