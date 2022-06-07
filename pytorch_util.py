@@ -23,8 +23,6 @@ def transform_image(image_bytes):
     normalize = T.Normalize(mean=[0.5], std=[0.5])
     transform = T.Compose([  # T.Grayscale(num_output_channels=1),
         T.Resize((512, 512)),
-        T.RandomHorizontalFlip(),
-        T.RandomPerspective(distortion_scale=0.05, p=0.5),
         T.ToTensor(),
         normalize,
     ])
